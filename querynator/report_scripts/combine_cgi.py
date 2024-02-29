@@ -348,3 +348,23 @@ def combine_cgi(cgi_path, outdir, logger):
     merged_df["evidence_CGI"] = merged_df.apply(lambda x: get_highest_evidence(x, biomarkers_df), axis=1)
     # write merged to report dir
     merged_df.to_csv(f"{outdir}/combined_files/alterations_vep.tsv", sep="\t", index=False)
+
+
+def parse_cna_analysis(cna_analysis_path: str) -> pd.DataFrame:
+    """
+    parse the cna analysis file into a pandas dataframe.
+
+    fields 'predicted_in_tumors' and 'known_in_tumors' are lists of tumor types i.e. [BRCA, OV, ST]
+    
+    :param cna_analysis_path: path to the cna_analysis.tsv file
+    :type  cna_analysis_path: str
+    :return: dataframe containing the cna_analysis data
+    :rtype : pd.DataFrame
+    """
+    def split_semicolon(s: str):
+        return s.split(sep=';')
+    
+    cna_analysis_df = pd.read_csv(cna_analysis_path, sep='\t', converters={"predicted_in_tumors": split_semicolon,
+                                                                           "known:in_tumors": split_semicolon})
+    
+    return cna_analysis_df
