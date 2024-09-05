@@ -159,7 +159,7 @@ def append_to_dict(dict1, dict2):
                 dict1[key].append(value)
             else:
                 if dict1[key] == "":
-                    dict1[key] = dict2[key]
+                    dict1[key] = [dict2[key]]
                 else:
                     dict1[key] = [dict1[key], dict2[key]]
 
